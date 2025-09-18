@@ -40,19 +40,19 @@ public class CatalogPage {
     public void clickFreeCheckboxButton() {
         waitVisible(freeButton);
         freeButton.shouldBe(visible).click();
-        sleep(2000);
+        sleep(CONNECTION_TIMEOUT);
     }
 
     public void clickSearchedCourse() {
         waitVisible(searchCourseByText);
         searchCourseByText.shouldBe(visible).click();
-        sleep(2000);
+        sleep(CONNECTION_TIMEOUT);
     }
 
     public void clickSearchButton() {
         waitVisible(searchButton);
         searchButton.shouldBe(visible).click();
-        sleep(2000);
+        sleep(CONNECTION_TIMEOUT);
     }
 
     void clickLoginButton() {
@@ -62,7 +62,7 @@ public class CatalogPage {
 
     public LoginPage clickEnterButton() {
         clickLoginButton();
-        sleep(2000);
+        sleep(CONNECTION_TIMEOUT);
         return LoginPage.returnPageObject();
     }
 
@@ -72,6 +72,7 @@ public class CatalogPage {
 
     public boolean checkUnworkedLinks() {
         boolean isAllLinksOk = true;
+        int errorsCount = 0;
         log.info("Найдено ссылок - {}", links.size());
         for (int i = 0; i < links.size(); i++) {
             try {
@@ -87,29 +88,33 @@ public class CatalogPage {
                             connection.setRequestMethod("HEAD");
                             log.info("Проверка ссылки - {}", url);
                             int responseCode = connection.getResponseCode();
-                            isAllLinksOk = checkWorkedLinks(responseCode,url);
+                            errorsCount = errorsCount + checkWorkedLinks(responseCode, url);
                             connection.disconnect();
                         } catch (Exception ex) {
                             log.error("Ошибка проверки URL: {} - {}", url, ex.getMessage());
-                            isAllLinksOk = false;
+                            errorsCount++;
                         }
                     }
                 }
             } catch (Exception e) {
                 log.error("Элемент недоступен: {}", e.getMessage());
-                isAllLinksOk = false;
+                errorsCount++;
             }
+        }
+        if (errorsCount > 0) {
+            isAllLinksOk = false;
+            log.info("Колличество не рабочих ссылок равно {}", errorsCount);
         }
         return isAllLinksOk;
     }
 
-    private Boolean checkWorkedLinks(int responseCode, String url) {
+    private Integer checkWorkedLinks(int responseCode, String url) {
         if (responseCode == RESPONSE_CODE_200) {
             log.info("✓ Ссылка рабочая: {}", url);
-            return true;
+            return 0;
         } else {
             log.error("✗ Ошибка ссылки: {} - код: {}", url, responseCode);
-            return false;
+            return 1;
         }
     }
 

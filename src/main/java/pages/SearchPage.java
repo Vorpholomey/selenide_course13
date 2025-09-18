@@ -4,7 +4,6 @@ import com.codeborne.selenide.*;
 
 import static com.codeborne.selenide.Selenide.*;
 
-
 public class SearchPage {
     private static SearchPage instance;
     private final ElementsCollection collectionCourses = $$(".course-card__title");

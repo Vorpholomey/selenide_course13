@@ -34,7 +34,6 @@ public class Steps {
         searchPage.inputSearchText(searchText);
     }
 
-
     @Step("Авторизоваться под пользователем")
     public void authorizeUser(String login, String password) {
         log.info("Кликаем на кнопку Войти");

@@ -7,7 +7,7 @@ public class Constants {
     public static final String ENTER_BUTTON_TEXT = "Войти";
     public static final String PROPERTIES = "Настройки";
     public static final String SAVE_CHANGES = "Сохранить изменения";
-    public static final String ERROR_LOGIN_PASS_MESSAGE="E-mail адрес и/или пароль не верны.";
+    public static final String ERROR_LOGIN_PASS_MESSAGE = "E-mail адрес и/или пароль не верны.";
     public static final String LOGIN = "vorpholomey@gmail.com";
     public static final String PASSWORD = "qqq123www";
     public static final String COLOUR_BUTTON_STYLE = "rgba(255, 255, 255, 1)";
