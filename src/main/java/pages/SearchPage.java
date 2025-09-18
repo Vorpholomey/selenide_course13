@@ -1,10 +1,9 @@
 package pages;
 
-import com.codeborne.selenide.CollectionCondition;
-import com.codeborne.selenide.ElementsCollection;
-import com.codeborne.selenide.SelenideElement;
+import com.codeborne.selenide.*;
 
 import static com.codeborne.selenide.Selenide.*;
+
 
 public class SearchPage {
     private static SearchPage instance;

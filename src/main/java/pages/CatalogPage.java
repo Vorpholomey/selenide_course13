@@ -1,17 +1,15 @@
 package pages;
 
-import com.codeborne.selenide.ElementsCollection;
-import com.codeborne.selenide.SelenideElement;
-import lombok.extern.slf4j.Slf4j;
+import com.codeborne.selenide.*;
+import lombok.extern.slf4j.*;
 
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.net.*;
 
 import static com.codeborne.selenide.Condition.*;
-import static com.codeborne.selenide.Selectors.byText;
+import static com.codeborne.selenide.Selectors.*;
 import static com.codeborne.selenide.Selenide.*;
 import static constants.Constants.*;
-import static constants.TestDataConstants.SEARCH_DATA_PATH;
+import static constants.TestDataConstants.*;
 import static utils.WaitVisibleElement.*;
 
 @Slf4j
@@ -20,13 +18,13 @@ public class CatalogPage {
 
     private final SelenideElement loginButton = $(".navbar__auth_login");
     private final SelenideElement freeButton = $(byText(FREE_CHECKBOX_TEXT));
-    private final SelenideElement searchByText = $(byText(SEARCH_DATA_PATH));
+    private final SelenideElement searchCourseByText = $(byText(SEARCH_DATA_PATH));
     private final SelenideElement searchButton = $(byText(FIND_BUTTON_TEXT));
     private final SelenideElement enterButton = $(byText(ENTER_BUTTON_TEXT));
     private final SelenideElement avatarImage = $(".navbar__profile-img");
     private final ElementsCollection links = $$x("//*[@href]");
     private final SelenideElement skolkovoLabel = $(".sk-link.page-footer__col");
-    private final SelenideElement settingsButton = $(byText("Настройки"));
+    private final SelenideElement settingsButton = $(byText(PROPERTIES));
 
     public static CatalogPage returnPageObject() {
         if (instance == null) {
@@ -40,26 +38,31 @@ public class CatalogPage {
     }
 
     public void clickFreeCheckboxButton() {
-        freeButton.shouldBe(visible);
-        freeButton.click();
+        waitVisible(freeButton);
+        freeButton.shouldBe(visible).click();
+        sleep(2000);
     }
 
     public void clickSearchedCourse() {
-        log.info("Нажатие на найденный курс");
-        waitVisible(searchByText);
-        searchByText.click();
+        waitVisible(searchCourseByText);
+        searchCourseByText.shouldBe(visible).click();
+        sleep(2000);
     }
 
     public void clickSearchButton() {
-        log.info("Нажатие на кнопку поиска");
         waitVisible(searchButton);
-        searchButton.click();
+        searchButton.shouldBe(visible).click();
+        sleep(2000);
+    }
+
+    void clickLoginButton() {
+        waitVisible(enterButton);
+        enterButton.shouldBe(visible).click();
     }
 
     public LoginPage clickEnterButton() {
-        waitVisible(enterButton);
-        enterButton.shouldBe(clickable);
-        enterButton.click();
+        clickLoginButton();
+        sleep(2000);
         return LoginPage.returnPageObject();
     }
 
@@ -69,7 +72,6 @@ public class CatalogPage {
 
     public boolean checkUnworkedLinks() {
         boolean isAllLinksOk = true;
-        int valueOfFailLinks = 0;
         log.info("Найдено ссылок - {}", links.size());
         for (int i = 0; i < links.size(); i++) {
             try {
@@ -85,28 +87,30 @@ public class CatalogPage {
                             connection.setRequestMethod("HEAD");
                             log.info("Проверка ссылки - {}", url);
                             int responseCode = connection.getResponseCode();
-                            if (responseCode == RESPONSE_CODE_200) {
-                                log.info("✓ Ссылка рабочая: {}", url);
-                            } else {
-                                log.error("✗ Ошибка ссылки: {} - код: {}", url, responseCode);
-                                isAllLinksOk = false;
-                                valueOfFailLinks++;
-                            }
+                            isAllLinksOk = checkWorkedLinks(responseCode,url);
                             connection.disconnect();
                         } catch (Exception ex) {
                             log.error("Ошибка проверки URL: {} - {}", url, ex.getMessage());
                             isAllLinksOk = false;
-                            valueOfFailLinks++;
                         }
                     }
                 }
             } catch (Exception e) {
                 log.error("Элемент недоступен: {}", e.getMessage());
                 isAllLinksOk = false;
-                valueOfFailLinks++;
             }
         }
         return isAllLinksOk;
+    }
+
+    private Boolean checkWorkedLinks(int responseCode, String url) {
+        if (responseCode == RESPONSE_CODE_200) {
+            log.info("✓ Ссылка рабочая: {}", url);
+            return true;
+        } else {
+            log.error("✗ Ошибка ссылки: {} - код: {}", url, responseCode);
+            return false;
+        }
     }
 
     public String getButtonColour() {
@@ -131,17 +135,13 @@ public class CatalogPage {
     }
 
     public void clickAvatarImage() {
-        log.info("Кликаем на кнопку аватара");
         waitVisible(avatarImage);
-        avatarImage.shouldBe(visible);
-        avatarImage.click();
+        avatarImage.shouldBe(visible).click();
     }
 
     public void clickSettingsButton() {
-        log.info("Кликаем на кнопку настройки у пользователя");
         waitVisible(settingsButton);
-        settingsButton.shouldBe(visible);
-        settingsButton.click();
+        settingsButton.shouldBe(visible).click();
         ProfileSettingsPage.returnPageObject();
     }
 }

@@ -1,20 +1,22 @@
 package pages;
 
-import com.codeborne.selenide.SelenideElement;
+import com.codeborne.selenide.*;
+import lombok.extern.slf4j.*;
 
-import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selectors.byName;
-import static com.codeborne.selenide.Selectors.byText;
-import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.Selectors.*;
+import static com.codeborne.selenide.Selenide.*;
+import static constants.Constants.*;
 import static utils.WaitVisibleElement.*;
 
+@Slf4j
 public class LoginPage {
     private static LoginPage instance;
 
     private final SelenideElement loginField = $(byName("login"));
     private final SelenideElement passwordField = $(byName("password"));
     private final SelenideElement enterButton = $(".sign-form__btn.button_with-loader");
-    private final SelenideElement errorMessage = $(byText("E-mail адрес и/или пароль не верны."));
+    private final SelenideElement errorMessage = $(byText(ERROR_LOGIN_PASS_MESSAGE));
 
     public static LoginPage returnPageObject() {
         if (instance == null) {
@@ -29,7 +31,7 @@ public class LoginPage {
     }
 
     public void enterPassword(String password) {
-        passwordField.shouldBe(visible);
+        waitVisible(passwordField);
         passwordField.setValue(password);
     }
 

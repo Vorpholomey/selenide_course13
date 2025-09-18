@@ -1,14 +1,9 @@
-import com.codeborne.selenide.Configuration;
-import com.codeborne.selenide.Selenide;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.TestInfo;
-import org.openqa.selenium.WebDriver;
-import steps.assertions.AssertSteps;
-import steps.assertions.Steps;
+import com.codeborne.selenide.*;
+import org.junit.jupiter.api.*;
+import steps.assertions.*;
 
 import static com.codeborne.selenide.Selenide.*;
+
 
 public abstract class TestBase {
     protected static String displayName;

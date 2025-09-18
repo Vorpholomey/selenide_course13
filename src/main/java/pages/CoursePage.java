@@ -1,12 +1,13 @@
 package pages;
 
-import com.codeborne.selenide.SelenideElement;
-import lombok.extern.slf4j.Slf4j;
+import com.codeborne.selenide.*;
+import lombok.extern.slf4j.*;
 
-import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selectors.byText;
-import static com.codeborne.selenide.Selenide.$;
-import static constants.Constants.JOIN_ON_COURSE_TEXT;
+import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.Selectors.*;
+import static com.codeborne.selenide.Selenide.*;
+import static constants.Constants.*;
+import static utils.WaitVisibleElement.*;
 
 @Slf4j
 public class CoursePage {
@@ -21,6 +22,7 @@ public class CoursePage {
     }
 
     public void checkAddCourseButton() {
+        waitVisible(addCourseButton);
         addCourseButton.shouldBe(visible);
     }
 }

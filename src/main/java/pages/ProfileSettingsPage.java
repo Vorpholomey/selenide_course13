@@ -1,20 +1,20 @@
 package pages;
 
-import com.codeborne.selenide.SelenideElement;
-import lombok.extern.slf4j.Slf4j;
-import utils.WaitVisibleElement;
+import com.codeborne.selenide.*;
+import lombok.extern.slf4j.*;
 
-import static com.codeborne.selenide.Selectors.byId;
-import static com.codeborne.selenide.Selectors.byText;
-import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selectors.*;
+import static com.codeborne.selenide.Selenide.*;
+import static constants.Constants.*;
 import static constants.TestDataConstants.*;
+import static utils.WaitVisibleElement.*;
 
 @Slf4j
 public class ProfileSettingsPage {
     private static ProfileSettingsPage instance;
 
     private final SelenideElement biographyField = $(byId("short_bio"));
-    private final SelenideElement saveButton = $(byText("Сохранить изменения"));
+    private final SelenideElement saveButton = $(byText(SAVE_CHANGES));
 
     public static ProfileSettingsPage returnPageObject() {
         if (instance == null) {
@@ -24,13 +24,11 @@ public class ProfileSettingsPage {
     }
 
     public void fillBiographyField() {
-        log.info("Заполняем поле Биография");
         biographyField.setValue(BIOGRAPHY);
     }
 
     public void clickSaveButton() {
-        log.info("Кликаем на кнопку Сохранить");
-        WaitVisibleElement.waitVisible(saveButton);
+        waitVisible(saveButton);
         saveButton.click();
     }
 }

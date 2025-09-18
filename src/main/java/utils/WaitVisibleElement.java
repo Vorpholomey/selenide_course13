@@ -1,17 +1,16 @@
 package utils;
 
-import com.codeborne.selenide.SelenideElement;
-import lombok.extern.slf4j.Slf4j;
-import static com.codeborne.selenide.Selenide.sleep;
-import static constants.Constants.DELAY_FOR_WAIT_ELEMENTS;
-import static constants.Constants.MAX_RETRIES;
+import com.codeborne.selenide.*;
+import lombok.extern.slf4j.*;
+
+import static com.codeborne.selenide.Selenide.*;
+import static constants.Constants.*;
 
 @Slf4j
 public class WaitVisibleElement {
     public static SelenideElement waitVisible(SelenideElement element) {
         int retry = 0;
-        int maxRetries = MAX_RETRIES;
-        while (retry < maxRetries) {
+        while (retry < MAX_RETRIES) {
             try {
                 if (element.exists()) {
                     return element;
